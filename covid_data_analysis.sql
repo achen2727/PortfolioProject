@@ -106,3 +106,26 @@ CREATE VIEW InfectedPop AS
 SELECT location, date, total_cases, population, (total_cases/population) * 100 AS infection_pop_percentage
 FROM ProtfolioProject..CovidDeaths
 WHERE continent IS NOT NULL
+
+-- Queries used for Tableau Project
+SELECT SUM(new_cases) as TotalCases, SUM(new_deaths) AS TotalDeaths, SUM(new_deaths)/SUM(new_cases) * 100 AS DeathPercentage
+FROM ProtfolioProject..CovidDeaths
+WHERE continent IS NOT NULL
+ORDER BY 1, 2
+
+SELECT Location, SUM(new_deaths) AS TotalDeatCT
+FROM ProtfolioProject..CovidDeaths
+WHERE continent IS NULL
+AND location NOT IN ('World', 'European Union', 'International')
+GROUP BY location
+ORDER BY TotalDeatCT DESC
+
+SELECT Location, Population, MAX(total_cases) AS HighestInfectionCT, MAX((total_cases/population)) * 100 AS InfectionPopPercentage
+FROM ProtfolioProject..CovidDeaths
+GROUP BY location, population
+ORDER BY InfectionPopPercentage DESC
+
+SELECT Location, Population, Date, MAX(total_cases) AS HighestInfectionCT, MAX((total_cases/population)) * 100 AS InfectionPopPercentage
+FROM ProtfolioProject..CovidDeaths
+GROUP BY location, population, date
+ORDER BY InfectionPopPercentage DESC
